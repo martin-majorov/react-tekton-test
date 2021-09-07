@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-deploy-api-pipelinerun
+spec:
+  pipelineRef:
+    name: tekton-react-test
+  params:
+    - name: git-url
+      value: https://github.com/martin-majorov/react-tekton-test
+    - name: IMAGE
+      value: image-registry.openshift-image-registry.svc:5000/ci-oc-pipelines-test/tekton-testls-reactapp-image
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 500Mi
